@@ -22,7 +22,7 @@ cyan = pygame.Color("#88C0D0")
 #TODO get exact coordinate
 os.environ['SDL_VIDEO_WINDOW_POS'] = "600,100"
 screen = pygame.display.set_mode((500, 600), pygame.HWSURFACE)
-pygame.display.set_caption(" ")
+pygame.display.set_caption("TRACK")
 
 screen.fill(black)
 pygame.display.update()

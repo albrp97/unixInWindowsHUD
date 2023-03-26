@@ -9,7 +9,7 @@ import subprocess
 pygame.init()
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "865,500"
-screen = pygame.display.set_mode((830, 430), pygame.HWSURFACE)
+screen = pygame.display.set_mode((830, 400), pygame.HWSURFACE)
 pygame.display.set_caption("HANKA TERMINAL")
 
 japFont=pygame.font.Font("./files/mplus-1mn-bold.ttf", 16)
@@ -68,8 +68,8 @@ hankaHash=['#####    #####       #####     #####       ##### #####    ######    
            '#####    ##########         ########   ######### #####    ##########         #####'
            ]
 
-colorScheme=[red,orange,yellow,green,pygame.Color("#8FBCBB"),cyan,blue,blueDark,violet,violetLight,pygame.Color("#ECEFF4"),pygame.Color("#E5E9F0"),pygame.Color("#D8DEE9"),pygame.Color("#4C566A"),pygame.Color("#434C5E"),pygame.Color("#3B4252"),pygame.Color("#2E3440")]
-gradient = color_gradient_with_repeats(colorScheme, 5, 3)
+colorScheme=[red,orange,yellow,green,cyan,blue,violetLight,violet]
+gradient=colorScheme
 
 def system_info():
     # Get operating system name and version
@@ -79,7 +79,7 @@ def system_info():
     # Get kernel version
     kernel_version = platform.version().split('.')[1:]
     kernel_version='.'.join(kernel_version)
-    kernel_version='11.'+kernel_version
+    kernel_version='.'+kernel_version
     
     # Get current time and uptime
     current_time = time.strftime('%Y-%m-%d %H:%M')
@@ -134,7 +134,7 @@ draw = True
 inText = ""
 ghostText=""
 keyColor=white
-palabrasClave=["exit","track"]
+palabrasClave=["exit","track",'quit','timer']
 
 def paint():
     screen.fill(black)
@@ -156,18 +156,17 @@ def paint():
     pygame.draw.line(screen, grey, (5, 260), (825, 260))
     pygame.draw.line(screen, grey, (415, 270), (415, 360))
     pygame.draw.line(screen, grey, (5, 370), (825, 370))
-    pygame.draw.line(screen, grey, (5, 400), (825, 400))
 
     # SysFetch
     write('ラタパ:',violetLight,5,10.5,japanese=True)
     write('カーネル:',violetLight,5,11.5,japanese=True)
     write('ゲンザイノジコク:',violetLight,5,12.5,japanese=True)
-    write('アップタイム:',violetLight,5,13.5,japanese=True)
+    write('いろあわせ:',violetLight,5,13.5,japanese=True)
 
-    write(info_list[0],white,410,10.5,righPad=True)
-    write(info_list[1],white,410,11.5,righPad=True)
-    write(info_list[2],white,410,12.5,righPad=True)
-    write(info_list[3],white,410,13.5,righPad=True)
+    write(f'{info_list[0]}{info_list[1]}',white,410,10.5,righPad=True)
+    write(info_list[2],white,410,11.5,righPad=True)
+    write(info_list[3],white,410,12.5,righPad=True)
+    # write(info_list[3],white,410,13.5,righPad=True)
 
     write('プロセッサー:',violetLight,420,10.5,japanese=True)
     write('メモリー:',violetLight,420,11.5,japanese=True)
@@ -180,25 +179,17 @@ def paint():
     write(info_list[7],white,825,13.5,righPad=True)
 
     # COLOR SCHEME
-    write('いろあわせ:',violetLight,5,14.8,japanese=True)
-    startColor=100
-    interval=5.5
+    startColor=227
+    interval=20
     for color in gradient:
-        pygame.draw.line(screen, color, (startColor, 385), (startColor+interval, 385),width=20)
-        startColor+=interval
+        pygame.draw.line(screen, color, (startColor, 354), (startColor+interval, 354),width=5)
+        startColor+=interval+3
+    write('いろあわせ:',violetLight,5,13.5,japanese=True)
     # INPUT
-    colorOnText(" Ghost@HANKA~",black,cyan,0,16)
-    write(inText,keyColor,135,16)
-    write(ghostText,grey,135,16)
-    write('|',greyLigth, 130+10*len(inText),16)
-    # label = myfont.render(inText, True, colorClave)
-    # screen.blit(label, (30, 400))
-    # label = myfont.render(ghostText, True, gris)
-    # screen.blit(label, (30, 400))
-    # label=myfont.render("|", True, grisclaro)
-    # screen.blit(label, (25+12*len(inText), 400))
-
-    # colorset
+    colorOnText(" Ghost@HANKA~",black,cyan,0,14.8)
+    write(inText,keyColor,135,14.8)
+    write(ghostText,grey,135,14.8)
+    write('|',greyLigth, 130+10*len(inText),14.8)
 
     pygame.display.update()
 ht=0
@@ -219,10 +210,12 @@ while running:
                 inText += " "
             elif pygame.key.name(event.key) == "return":
                 # todo ejecutar
-                if inText=="exit":
+                if inText=="exit" or inText=='quit':
                     running = False
                 elif inText == "track":
                     subprocess.Popen(["python", "track.py"])
+                elif inText == "timer":
+                    subprocess.Popen(["python", "timer.py"])
                 inText=''
             elif pygame.key.name(event.key) == "escape":
                 inText = ""
@@ -252,16 +245,4 @@ while running:
         if ht==500:
             draw=True
             ht = 0
-
-
-
-
-
-
-
-
-
-
-
-
 
