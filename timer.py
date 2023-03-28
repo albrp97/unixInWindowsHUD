@@ -4,7 +4,50 @@ from globalVars import *
 pygame.init()
 
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "100,100"
+# Define constants for file name and possible screen positions
+pygame.display.set_icon(pygame.image.load('files/IconTimer.png'))
+SCREEN_FILE = 'files/screen_positions_timer.txt'
+POSSIBLE_POSITIONS = ['10,1310', '420,1310', '10,1150','420,1150']
+
+def get_screen_position():
+    # Read screen positions from file, or create file if it doesn't exist
+    if not os.path.exists(SCREEN_FILE):
+        with open(SCREEN_FILE, 'w') as f:
+            pass
+    with open(SCREEN_FILE, 'r') as f:
+        positions = [line.strip() for line in f.readlines()]
+
+    # Find the first available position from the possible positions list
+    for position in POSSIBLE_POSITIONS:
+        if position not in positions:
+            return position
+    
+    # If all positions are taken, return None
+    return None
+
+def set_screen_position(position):
+    # Append the position to the file
+    with open(SCREEN_FILE, 'a') as f:
+        f.write(f'{position}\n')
+    # Set the SDL_VIDEO_WINDOW_POS environment variable to the screen position
+    os.environ['SDL_VIDEO_WINDOW_POS'] = position
+
+def clear_screen_position(position):
+    # Remove the position from the file
+    with open(SCREEN_FILE, 'r') as f:
+        positions = [line.strip() for line in f.readlines()]
+    positions.remove(position)
+    with open(SCREEN_FILE, 'w') as f:
+        for position in positions:
+            f.write(f'{position}\n')
+
+# os.environ['SDL_VIDEO_WINDOW_POS'] = "100,100"
+position = get_screen_position()
+if position is None:
+    exit()
+
+set_screen_position(position)
+
 screen = pygame.display.set_mode((400, 120), pygame.HWSURFACE)
 pygame.display.set_caption("TIMER")
 
@@ -74,7 +117,6 @@ def paint():
         pygame.draw.line(screen, cyan, (5, 80), (395, 80),width=5)
         if soundPlaying:
             pygame.draw.line(screen, red, (5, 80), (395, 80),width=5)
-        print('a')
 
     pygame.display.update()
 
@@ -82,7 +124,7 @@ while running:
     sleepTime=0.05
     if start_time is not None:
         time_left = time_limit - (time.time() - start_time)
-        sleepTime=0.001
+        sleepTime=0.01
         if time_left<=0:
             start_time=None
             pygame.mixer.init()
@@ -130,3 +172,7 @@ while running:
                 running = False
     
     time.sleep(sleepTime)  # Add a 10ms delay to reduce CPU load
+try:
+    clear_screen_position(position)
+except:
+    pass

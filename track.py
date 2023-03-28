@@ -1,6 +1,5 @@
 import pygame
 from datetime import datetime
-from rich.theme import Theme
 import json, os, time
 
 pygame.init()
@@ -19,8 +18,8 @@ blueDark = pygame.Color("#5E81AC")
 blue = pygame.Color("#81A1C1")
 cyan = pygame.Color("#88C0D0")
 
-#TODO get exact coordinate
-os.environ['SDL_VIDEO_WINDOW_POS'] = "600,100"
+pygame.display.set_icon(pygame.image.load('files/IconTrack.png'))
+os.environ['SDL_VIDEO_WINDOW_POS'] = "1033,550"
 screen = pygame.display.set_mode((500, 600), pygame.HWSURFACE)
 pygame.display.set_caption("TRACK")
 
@@ -430,8 +429,6 @@ while running:
             else:
                 number += pygame.key.name(event.key)
                 draw = True
-            # print(pygame.key.name(event.key))
-            # pygame.display.update()
         elif event.type == pygame.QUIT:
             running = False
     else:

@@ -8,7 +8,8 @@ import subprocess
 
 pygame.init()
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "865,500"
+pygame.display.set_icon(pygame.image.load('files/IconTerminal.png'))
+os.environ['SDL_VIDEO_WINDOW_POS'] = "865,100"
 screen = pygame.display.set_mode((830, 400), pygame.HWSURFACE)
 pygame.display.set_caption("HANKA TERMINAL")
 
@@ -245,4 +246,7 @@ while running:
         if ht==500:
             draw=True
             ht = 0
+
+with open('files/screen_positions_timer.txt', 'w') as f:
+    pass
 
