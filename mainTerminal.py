@@ -214,9 +214,9 @@ while running:
                 if inText=="exit" or inText=='quit':
                     running = False
                 elif inText == "track":
-                    subprocess.Popen(["python", "track.py"])
+                    subprocess.Popen(["python", "runTrack.py"])
                 elif inText == "timer":
-                    subprocess.Popen(["python", "timer.py"])
+                    subprocess.Popen(["python", "runTimer.py"])
                 inText=''
             elif pygame.key.name(event.key) == "escape":
                 inText = ""
